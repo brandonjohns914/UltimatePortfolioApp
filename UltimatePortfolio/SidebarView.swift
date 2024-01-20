@@ -8,11 +8,17 @@
 import SwiftUI
 
 struct SidebarView: View {
+    
+    //getting the data controller
     @EnvironmentObject var dataController: DataController
+   
+        // this accesses the all and recent filters in filter
     let smartFilters: [Filter] = [.all, .recent]
     
+    // find and sort Tags by name
     @FetchRequest(sortDescriptors: [SortDescriptor(\.name)]) var tags: FetchedResults<Tag>
     
+    // convert tags into one filter object
     var tagFilters: [Filter] {
         tags.map { tag in
             Filter(id: tag.tagID, name: tag.tagName, icon: "tag", tag: tag)
@@ -22,13 +28,18 @@ struct SidebarView: View {
     var body: some View {
         List(selection: $dataController.selectedFilter) {
             Section("Smart Filters") {
+                // this sorts through both recent and all
                 ForEach(smartFilters) { filter in
+                    // changes the view of recent or all
                     NavigationLink(value: filter) {
+                        // this shows all issues.names
                         Label(filter.name, systemImage: filter.icon)
                     }
                 }
             }
             
+            // takes in the tags and places them
+            // changes the view of where the tag goes
             Section("Tags") {
                 ForEach(tagFilters) { filter in
                     NavigationLink(value: filter) {
@@ -40,7 +51,7 @@ struct SidebarView: View {
             }
         }
         .toolbar {
-            Button {
+            Button {// creates sample data adds and deletes them 
                 dataController.deleteAll()
                 dataController.createSampleData()
             } label: {

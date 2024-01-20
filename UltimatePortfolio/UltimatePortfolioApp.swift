@@ -9,6 +9,7 @@ import SwiftUI
 
 @main
 struct UltimatePortfolioApp: App {
+    // instance of data controller to be shared everywhere
     @StateObject var dataController = DataController()
     
     var body: some Scene {
@@ -19,7 +20,7 @@ struct UltimatePortfolioApp: App {
                 ContentView()
             } detail: {
                 DetailView()
-            }
+            } // everytime Swift wants to query core data needs to know where to look
             .environment(\.managedObjectContext, dataController.container.viewContext)
             .environmentObject(dataController)
         }
