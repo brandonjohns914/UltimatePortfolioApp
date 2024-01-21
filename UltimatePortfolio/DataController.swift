@@ -152,4 +152,19 @@ class DataController: ObservableObject {
         delete(request2)
         save()
     }
+    
+    func missingTags(from issue: Issue) -> [Tag] {
+        let request = Tag.fetchRequest()
+        
+        // all tags as an array
+        let allTags = (try? container.viewContext.fetch(request)) ?? []
+        
+        let allTagsSet = Set(allTags)
+        
+        //difference between all tags and issue tags
+        let difference = allTagsSet.symmetricDifference(issue.issueTags)
+        
+        //array of tags 
+        return difference.sorted()
+    }
 }
