@@ -39,10 +39,16 @@ class DataController: ObservableObject {
             container.persistentStoreDescriptions.first?.url = URL(filePath: "/dev/null")
         }
         
+        
+        //if something happens on another device
         container.viewContext.automaticallyMergesChangesFromParent = true
+        //in memory changes more important that remote changes
         container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyStoreTrump
         
+        //tell when something has changed
         container.persistentStoreDescriptions.first?.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
+        
+        // when changes has happened call remoteStoreChanged so the views will update
         NotificationCenter.default.addObserver(forName: .NSPersistentStoreRemoteChange, object: container.persistentStoreCoordinator, queue: .main, using: remoteStoreChanged)
         
         
@@ -54,6 +60,8 @@ class DataController: ObservableObject {
             }
         }
     }
+    
+    // change has happened to the data
     func remoteStoreChanged(_ notification: Notification) {
         objectWillChange.send()
     }
@@ -112,7 +120,6 @@ class DataController: ObservableObject {
         //1st tell me what you deleted the batch.result the object identifiers
         //2nd execute fetch request
         //3rd place the delete objects into a dictionary
-        
         
         
         // taking the fetchRequest results and making them a batchDelete

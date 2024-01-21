@@ -20,7 +20,7 @@ struct Filter: Identifiable, Hashable {
     //all the issues
     static var all = Filter(id: UUID(), name: "All Issues", icon: "tray")
     
-    // recent issues
+    // all recent issues
     static var recent = Filter(id: UUID(), name: "Recent issues", icon: "clock", minModificationDate: .now.addingTimeInterval(86400 - 7))
     
     

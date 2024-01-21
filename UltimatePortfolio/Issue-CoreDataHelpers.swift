@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+// Issue is the class given when CoreDate Entinties are created
 extension Issue {
     var issueTitle: String {
         get { title ?? "" }
@@ -25,12 +25,16 @@ extension Issue {
         modificationDate ?? .now
     }
     
+    //sorts issueTags so they are sorted in order on the screen
     var issueTags: [Tag] {
+        
         let result = tags?.allObjects as? [Tag] ?? []
         return result.sorted()
     }
     
+    //sample example issue 
     static var example: Issue {
+        
         let controller = DataController(inMemory: true)
         
         let viewContext = controller.container.viewContext
@@ -44,6 +48,7 @@ extension Issue {
     }
 }
 
+// have to make Issue comparable so it can be sorted
 extension Issue: Comparable {
     public static func <(lhs: Issue, rhs: Issue) -> Bool {
         let left = lhs.issueTitle.localizedLowercase
