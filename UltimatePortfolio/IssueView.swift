@@ -60,6 +60,8 @@ struct IssueView: View {
                 } label: {
                     Text(issue.issueTagsList)
                         .multilineTextAlignment(.leading)
+                        .frame(maxWidth: .infinity, alignment: .leading) //tags selected view size
+                        .animation(nil, value: issue.issueTagsList) // no animation on the tags selected 
                 }
             }
             Section {
@@ -71,7 +73,8 @@ struct IssueView: View {
                     TextField("Description", text: $issue.issueContent, prompt: Text("Enter the issue description here"), axis: .vertical)
                 }
             }
-        }
+        } // if issue is deleted dont allow editing
+        .disabled(issue.isDeleted)
     }
 }
 
