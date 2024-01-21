@@ -19,6 +19,9 @@ class DataController: ObservableObject {
     // This accesses the Issues on the mainDataModel
     @Published var selectedIssue: Issue?
     
+    
+    private var saveTask: Task<Void, Error>?
+    
     // example of a of the DataController without creating an instance
     static var preview: DataController = {
         let dataController = DataController(inMemory: true)
@@ -104,6 +107,20 @@ class DataController: ObservableObject {
         }
     }
     
+    // save task after waiting a few seconds
+    func queueSave() {
+        // cancel the save if changes happen before 3 seconds are complete
+        saveTask?.cancel()
+        
+        // creating a new task to wait 3 seconds before saving
+        // must run this task on the MainActor
+        saveTask = Task { @MainActor in
+            print("Queuing save")
+            try await Task.sleep(for: .seconds(3))
+            save()
+            print("Saved")
+        }
+    }
     
     func delete(_ object: NSManagedObject) {
         //NSManagedObect = base core data Model that all objects inherit from

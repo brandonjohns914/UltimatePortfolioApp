@@ -12,6 +12,8 @@ struct UltimatePortfolioApp: App {
     // instance of data controller to be shared everywhere
     @StateObject var dataController = DataController()
     
+    @Environment(\.scenePhase) var scenePhase
+    
     var body: some Scene {
         WindowGroup {
             NavigationSplitView {
@@ -23,6 +25,12 @@ struct UltimatePortfolioApp: App {
             } // everytime Swift wants to query core data needs to know where to look
             .environment(\.managedObjectContext, dataController.container.viewContext)
             .environmentObject(dataController)
+            .onChange(of: scenePhase) { _, phase in
+                // if app is not active immediately call save
+                if phase != .active {
+                    dataController.save()
+                }
+            }
         }
     }
 }

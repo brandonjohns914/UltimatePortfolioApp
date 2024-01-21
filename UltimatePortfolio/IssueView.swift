@@ -75,6 +75,10 @@ struct IssueView: View {
             }
         } // if issue is deleted dont allow editing
         .disabled(issue.isDeleted)
+        // every small change wont instantly save it will wait 3 seconds before calling save
+        .onReceive(issue.objectWillChange){ _ in
+            dataController.queueSave()
+        }
     }
 }
 
