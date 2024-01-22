@@ -22,6 +22,9 @@ class DataController: ObservableObject {
     //store filter text
     @Published var filterText = ""
     
+    @Published var filterTokens = [Tag]()
+    
+    
     
     private var saveTask: Task<Void, Error>?
     
@@ -31,6 +34,33 @@ class DataController: ObservableObject {
         dataController.createSampleData()
         return dataController
     }()
+    
+    
+    // searching for a specific value
+    var suggestedFilterTokens: [Tag] {
+        // search starts with #
+        guard filterText.starts(with: "#") else {
+            return []
+        }
+        
+        // removing # and white spaces to search for the request
+        let trimmedFilterText = String(filterText.dropFirst()).trimmingCharacters(in: .whitespaces)
+        // searching Tag for the request
+        let request = Tag.fetchRequest()
+        
+        if trimmedFilterText.isEmpty == false {
+            // search case insensitive for exactly what was typed in
+            request.predicate = NSPredicate(format: "name CONTAINS[c] %@", trimmedFilterText)
+        }
+        
+        // return the result or an empty array
+        return (try? container.viewContext.fetch(request).sorted()) ?? []
+    }
+    
+    
+    
+   
+    
     
     
     //creates a testing feature that only exsists in ram
@@ -180,9 +210,9 @@ class DataController: ObservableObject {
         let allTags = (try? container.viewContext.fetch(request)) ?? []
         
         let allTagsSet = Set(allTags)
-        
         //difference between all tags and issue tags
         let difference = allTagsSet.symmetricDifference(issue.issueTags)
+
         
         //array of tags 
         return difference.sorted()
@@ -194,6 +224,7 @@ class DataController: ObservableObject {
         // choosing between the selected if no filter then filter by all
         let filter = selectedFilter ?? .all
         
+        // array that will contain all predicates
         var predicates = [NSPredicate]()
         
         
@@ -202,22 +233,41 @@ class DataController: ObservableObject {
         if let tag = filter.tag {
             
            // is there a tag that contains the searched tag
-            let tagPredicate = NSPredicate(format: "tags CONTAINS %@", filter.minModificationDate as NSDate)
+            let tagPredicate = NSPredicate(format: "tags CONTAINS %@", tag)
             // adding the tagPredicate to the predicates array
             predicates.append(tagPredicate)
             
             
         } else {
             // searching by minModificationDate
-          let datePredicate = NSPredicate(format: "modificationDate > %@", filter.minModificationDate as NSDate)
+            let datePredicate = NSPredicate(format: "modificationDate > %@", filter.minModificationDate as NSDate)
             predicates.append(datePredicate)
         }
         
         
+        let trimmedFilterText = filterText.trimmingCharacters(in: .whitespaces)
+
+        
+        if trimmedFilterText.isEmpty == false {
+            // contains case insensitive of title and content
+            let titlePredicate = NSPredicate(format: "title CONTAINS[c] %@", trimmedFilterText)
+            let contentPredicate = NSPredicate(format: "content CONTAINS[c] %@", trimmedFilterText)
+            
+            // either title or content predicate
+            let combinedPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: [titlePredicate, contentPredicate])
+            predicates.append(combinedPredicate)
+        }
+        
+        if filterTokens.isEmpty == false {
+            for filterToken in filterTokens {
+                let tokenPredicate = NSPredicate(format: "tags CONTAINS %@", filterToken)
+                predicates.append(tokenPredicate)
+            }
+        }
         let request = Issue.fetchRequest()
         
         //Combining all predicates and making it one single predicate
-        request.predicate =  NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         
         // setting allIssues = the predicate search array results
         let allIssues = (try? container.viewContext.fetch(request)) ?? []
