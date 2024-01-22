@@ -19,6 +19,9 @@ class DataController: ObservableObject {
     // This accesses the Issues on the mainDataModel
     @Published var selectedIssue: Issue?
     
+    //store filter text
+    @Published var filterText = ""
+    
     
     private var saveTask: Task<Void, Error>?
     
@@ -183,5 +186,41 @@ class DataController: ObservableObject {
         
         //array of tags 
         return difference.sorted()
+    }
+    
+    //filtering issues
+    func issuesForSelectedFilter() -> [Issue] {
+        
+        // choosing between the selected if no filter then filter by all
+        let filter = selectedFilter ?? .all
+        
+        var predicates = [NSPredicate]()
+        
+        
+        // searching based on tags or modificationDate
+        // filter comes from the coredata automatticaly generated classes
+        if let tag = filter.tag {
+            
+           // is there a tag that contains the searched tag
+            let tagPredicate = NSPredicate(format: "tags CONTAINS %@", filter.minModificationDate as NSDate)
+            // adding the tagPredicate to the predicates array
+            predicates.append(tagPredicate)
+            
+            
+        } else {
+            // searching by minModificationDate
+          let datePredicate = NSPredicate(format: "modificationDate > %@", filter.minModificationDate as NSDate)
+            predicates.append(datePredicate)
+        }
+        
+        
+        let request = Issue.fetchRequest()
+        
+        //Combining all predicates and making it one single predicate
+        request.predicate =  NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        
+        // setting allIssues = the predicate search array results
+        let allIssues = (try? container.viewContext.fetch(request)) ?? []
+        return allIssues.sorted()
     }
 }
