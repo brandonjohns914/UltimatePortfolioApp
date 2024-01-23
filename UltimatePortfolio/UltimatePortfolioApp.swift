@@ -25,7 +25,9 @@ struct UltimatePortfolioApp: App {
             } // everytime Swift wants to query core data needs to know where to look
             .environment(\.managedObjectContext, dataController.container.viewContext)
             .environmentObject(dataController)
-            .onChange(of: scenePhase) { _, phase in
+            
+         .onChange(of: scenePhase) { oldPhase, phase in
+           
                 // if app is not active immediately call save
                 if phase != .active {
                     dataController.save()

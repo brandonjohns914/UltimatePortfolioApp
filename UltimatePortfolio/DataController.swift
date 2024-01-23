@@ -59,10 +59,11 @@ class DataController: ObservableObject {
     
     // searching for a specific value
     var suggestedFilterTokens: [Tag] {
+        // ios 17 requires tag query to be empty
         // search starts with #
-        guard filterText.starts(with: "#") else {
-            return []
-        }
+//        guard filterText.starts(with: "#") else {
+//            return []
+//        }
         
         // removing # and white spaces to search for the request
         let trimmedFilterText = String(filterText.dropFirst()).trimmingCharacters(in: .whitespaces)
@@ -318,5 +319,30 @@ class DataController: ObservableObject {
         // setting allIssues = the predicate search array results
         let allIssues = (try? container.viewContext.fetch(request)) ?? []
         return allIssues.sorted()
+    }
+    
+    //creates and saves new issue
+    func newIssue() {
+        let issue = Issue(context: container.viewContext)
+        // .title comes from the dataModel attributes
+        issue.title = "New Issue"
+        issue.creationDate = .now
+        issue.priority = 1 
+        
+        // assigns tag to the created issue 
+        if let tag = selectedFilter?.tag {
+            issue.addToTags(tag)
+        }
+        save()
+        
+        // setting the issue in the datamodel to this issue 
+        selectedIssue = issue
+    }
+    
+    func newTag() {
+        let tag = Tag(context: container.viewContext)
+        tag.id = UUID()
+        tag.name = "New Tag"
+        save() 
     }
 }

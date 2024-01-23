@@ -11,12 +11,18 @@ struct SidebarView: View {
     
     //getting the data controller
     @EnvironmentObject var dataController: DataController
-   
-        // this accesses the all and recent filters in filter
+    
+    // this accesses the all and recent filters in filter
     let smartFilters: [Filter] = [.all, .recent]
     
     // find and sort Tags by name
     @FetchRequest(sortDescriptors: [SortDescriptor(\.name)]) var tags: FetchedResults<Tag>
+    
+    // renaming tags are local
+    @State private var tagToRename: Tag?
+    @State private var renamingTag = false
+    @State private var tagName = ""
+    
     
     // convert tags into one filter object
     var tagFilters: [Filter] {
@@ -45,18 +51,37 @@ struct SidebarView: View {
                     NavigationLink(value: filter) {
                         Label(filter.name, systemImage: filter.icon)
                             .badge(filter.tag?.tagActiveIssues.count ?? 0)
+                            .contextMenu {
+                                Button {
+                                    rename(filter)
+                                } label: {
+                                    Label("Rename", systemImage: "pencil")
+                                }
+                            }
                     }
                 }
                 .onDelete(perform: delete)
             }
         }
         .toolbar {
-            Button {// creates sample data adds and deletes them 
+            Button(action: dataController.newTag) {
+                Label("Add tag", systemImage: "plus")
+            }
+            
+            //only used during debug wont be viewed from appstore
+            #if DEBUG
+            Button {// creates sample data adds and deletes them
                 dataController.deleteAll()
                 dataController.createSampleData()
             } label: {
                 Label("ADD SAMPLES", systemImage: "flame")
-            }
+            } #endif
+            
+        }
+        .alert("Rename tag", isPresented: $renamingTag) {
+            Button("OK", action: completeRename)
+            Button("Cancel", role: .cancel) { }
+            TextField("New name", text: $tagName)
         }
     }
     
@@ -65,6 +90,23 @@ struct SidebarView: View {
             let item = tags[offset]
             dataController.delete(item)
         }
+    }
+    
+    
+    func rename(_ filter: Filter) {
+        // setting local rename to filter.tag
+        tagToRename = filter.tag
+        //setting name to filter.name
+        tagName = filter.name
+        
+        renamingTag = true
+    }
+    
+    func completeRename() {
+        // setting tagNAme to the rename
+        tagToRename?.name = tagName
+        // saving the rename
+        dataController.save()
     }
 }
 
