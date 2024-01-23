@@ -5,7 +5,20 @@
 //  Created by Brandon Johns on 1/16/24.
 //
 
+
 import CoreData
+
+enum SortType: String {
+    // raw value is what is assigned in coredata so the string version of these
+    case dateCreated = "creationDate"
+    case dateModified = "modificationDate"
+}
+
+enum Status {
+    case all, open, closed
+}
+
+
 
 class DataController: ObservableObject {
     
@@ -23,6 +36,14 @@ class DataController: ObservableObject {
     @Published var filterText = ""
     
     @Published var filterTokens = [Tag]()
+    
+    @Published var filterEnabled = false
+    // 1 = low 2 = high -1 = any priority
+    @Published var filterPriority = -1
+    
+    @Published var filterStatus = Status.all
+    @Published var sortType = SortType.dateCreated
+    @Published var sortNewestFirst = true 
     
     
     
@@ -264,10 +285,35 @@ class DataController: ObservableObject {
                 predicates.append(tokenPredicate)
             }
         }
+        
+        if filterEnabled {
+            if filterPriority >= 0 {
+                // filtering a number
+                let priorityFilter = NSPredicate(format: "priority = %d", filterPriority)
+                //adding number priority to predicate array
+                predicates.append(priorityFilter)
+            }
+            // filterStatus not all issues
+            if filterStatus != .all {
+                // filterStatus = closed make it true if not make it false
+                let lookForClosed = filterStatus == .closed
+                // looking  for closed status filters
+                let statusFilter = NSPredicate(format: "completed = %@", NSNumber(value: lookForClosed))
+                // adding closed status filtesr to the predicate array
+                predicates.append(statusFilter)
+                
+            }
+        }
+        
+        
         let request = Issue.fetchRequest()
         
         //Combining all predicates and making it one single predicate
         request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        // fetching sort descriptory
+        //reading out the rawValue of dateCreated/ dateModified 
+        request.sortDescriptors = [NSSortDescriptor(key: sortType.rawValue, ascending: sortNewestFirst)]
+        
         
         // setting allIssues = the predicate search array results
         let allIssues = (try? container.viewContext.fetch(request)) ?? []
