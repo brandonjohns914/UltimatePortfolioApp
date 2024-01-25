@@ -24,6 +24,8 @@ struct SidebarView: View {
     @State private var tagName = ""
     
     
+    @State private var showingAwards = false
+    
     // convert tags into one filter object
     var tagFilters: [Filter] {
         tags.map { tag in
@@ -68,6 +70,13 @@ struct SidebarView: View {
                 Label("Add tag", systemImage: "plus")
             }
             
+            Button {
+                showingAwards.toggle()
+            } label: {
+                Label("Show awards", systemImage: "rosette")
+            }
+            
+            
             //only used during debug wont be viewed from appstore
             #if DEBUG
             Button {// creates sample data adds and deletes them
@@ -83,6 +92,7 @@ struct SidebarView: View {
             Button("Cancel", role: .cancel) { }
             TextField("New name", text: $tagName)
         }
+        .sheet(isPresented: $showingAwards, content: AwardsView.init) 
     }
     
     func delete(_ offsets: IndexSet) {

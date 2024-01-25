@@ -11,6 +11,8 @@
 		4117A5832B58B986006BD701 /* Tag-CoreDataHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4117A5822B58B986006BD701 /* Tag-CoreDataHelpers.swift */; };
 		4141C6F32B61D2560036EC84 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4141C6F12B61D2560036EC84 /* Colors.xcassets */; };
 		4141C6F42B61D2560036EC84 /* Awards.json in Resources */ = {isa = PBXBuildFile; fileRef = 4141C6F22B61D2560036EC84 /* Awards.json */; };
+		4141C6F62B61D55C0036EC84 /* Award.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4141C6F52B61D55C0036EC84 /* Award.swift */; };
+		4141C6F82B61D69D0036EC84 /* AwardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4141C6F72B61D69D0036EC84 /* AwardsView.swift */; };
 		4145D49F2B59D4270002CA91 /* IssueRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4145D49E2B59D4270002CA91 /* IssueRow.swift */; };
 		4145D4A12B59F36F0002CA91 /* IssueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4145D4A02B59F36F0002CA91 /* IssueView.swift */; };
 		4145D4A32B59F37C0002CA91 /* NoIssueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4145D4A22B59F37C0002CA91 /* NoIssueView.swift */; };
@@ -31,6 +33,8 @@
 		4117A5822B58B986006BD701 /* Tag-CoreDataHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tag-CoreDataHelpers.swift"; sourceTree = "<group>"; };
 		4141C6F12B61D2560036EC84 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		4141C6F22B61D2560036EC84 /* Awards.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Awards.json; sourceTree = "<group>"; };
+		4141C6F52B61D55C0036EC84 /* Award.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Award.swift; sourceTree = "<group>"; };
+		4141C6F72B61D69D0036EC84 /* AwardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwardsView.swift; sourceTree = "<group>"; };
 		4145D49E2B59D4270002CA91 /* IssueRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueRow.swift; sourceTree = "<group>"; };
 		4145D4A02B59F36F0002CA91 /* IssueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueView.swift; sourceTree = "<group>"; };
 		4145D4A22B59F37C0002CA91 /* NoIssueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoIssueView.swift; sourceTree = "<group>"; };
@@ -81,15 +85,17 @@
 			children = (
 				41CD14DE2B576FE500DFA242 /* Info.plist */,
 				417E5E4B2B55EE5F002F8B87 /* UltimatePortfolioApp.swift */,
+				41CD14DC2B575A3400DFA242 /* DataController.swift */,
 				417E5E4D2B55EE5F002F8B87 /* ContentView.swift */,
-				4145D49E2B59D4270002CA91 /* IssueRow.swift */,
 				41CD14DF2B5894E700DFA242 /* SidebarView.swift */,
-				41D3465B2B608B6D00F0F9D4 /* Bundle-Decodable.swift */,
 				41CD14E12B58950E00DFA242 /* DetailView.swift */,
 				4145D4A02B59F36F0002CA91 /* IssueView.swift */,
+				4141C6F72B61D69D0036EC84 /* AwardsView.swift */,
 				4145D4A22B59F37C0002CA91 /* NoIssueView.swift */,
-				41CD14DC2B575A3400DFA242 /* DataController.swift */,
+				4145D49E2B59D4270002CA91 /* IssueRow.swift */,
 				41CD14E32B589BEC00DFA242 /* Filter.swift */,
+				4141C6F52B61D55C0036EC84 /* Award.swift */,
+				41D3465B2B608B6D00F0F9D4 /* Bundle-Decodable.swift */,
 				4117A5802B58B7DF006BD701 /* Issue-CoreDataHelpers.swift */,
 				4117A5822B58B986006BD701 /* Tag-CoreDataHelpers.swift */,
 				41CD14D92B57529700DFA242 /* Main.xcdatamodeld */,
@@ -183,6 +189,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				41CD14E42B589BEC00DFA242 /* Filter.swift in Sources */,
+				4141C6F62B61D55C0036EC84 /* Award.swift in Sources */,
+				4141C6F82B61D69D0036EC84 /* AwardsView.swift in Sources */,
 				4117A5832B58B986006BD701 /* Tag-CoreDataHelpers.swift in Sources */,
 				41CD14DB2B57529700DFA242 /* Main.xcdatamodeld in Sources */,
 				4117A5812B58B7DF006BD701 /* Issue-CoreDataHelpers.swift in Sources */,
