@@ -156,6 +156,8 @@ class DataController: ObservableObject {
     }
     
     func save() {
+        //because the onsubmit in issueview  save if there is a queued save just cancel it 
+        saveTask?.cancel()
         // active memory has changed then save it
         if container.viewContext.hasChanges {
             try? container.viewContext.save()
@@ -318,7 +320,7 @@ class DataController: ObservableObject {
         
         // setting allIssues = the predicate search array results
         let allIssues = (try? container.viewContext.fetch(request)) ?? []
-        return allIssues.sorted()
+        return allIssues
     }
     
     //creates and saves new issue
