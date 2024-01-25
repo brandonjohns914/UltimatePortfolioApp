@@ -52,22 +52,26 @@ struct SidebarView: View {
                 ForEach(tagFilters) { filter in
                     NavigationLink(value: filter) {
                         Label(filter.name, systemImage: filter.icon)
-                            .badge(filter.tag?.tagActiveIssues.count ?? 0)
+                            .badge(filter.activeIssuesCount)
                             .contextMenu {
                                 Button {
                                     rename(filter)
                                 } label: {
                                     Label("Rename", systemImage: "pencil")
                                 }
+                                // delete the tag during creation
                                 Button(role: .destructive){
                                     delete(filter)
                                 } label: {
                                     Label("Delete", systemImage: "trash")
                                 }
                             }
+                            .accessibilityElement() //groups all of these as one element for accessibility
+                            .accessibilityLabel(filter.name)
+                            .accessibilityHint("^[\(filter.activeIssuesCount) issue](inflect: true)") //automatic grammar agreement
                     }
                 }
-                .onDelete(perform: delete)
+                .onDelete(perform: delete) // to swipe and delete tags
             }
         }
         .toolbar {

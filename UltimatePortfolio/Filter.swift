@@ -17,6 +17,10 @@ struct Filter: Identifiable, Hashable {
     // can also filter by tags
     var tag: Tag?
     
+    var activeIssuesCount: Int {
+        tag?.tagActiveIssues.count ?? 0
+    }
+    
     //all the issues conform to this 
     static var all = Filter(id: UUID(), name: "All Issues", icon: "tray")
     
