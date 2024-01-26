@@ -51,6 +51,10 @@ extension Issue {
         }
     }
     
+    var issueFormattedCreationDate: String {
+        issueCreationDate.formatted(date: .numeric, time: .omitted)
+    }
+    
     //sample example issue
     static var example: Issue {
         

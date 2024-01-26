@@ -327,7 +327,8 @@ class DataController: ObservableObject {
     func newIssue() {
         let issue = Issue(context: container.viewContext)
         // .title comes from the dataModel attributes
-        issue.title = "New Issue"
+        // NSLocalizedString for multiple language support
+        issue.title = NSLocalizedString("New Issue", comment: "Create a new issue")
         issue.creationDate = .now
         issue.priority = 1 
         
@@ -344,8 +345,9 @@ class DataController: ObservableObject {
     func newTag() {
         let tag = Tag(context: container.viewContext)
         tag.id = UUID()
-        tag.name = "New Tag"
-        save() 
+        // NSLocalizedString for multiple language support
+        tag.name = NSLocalizedString("New Tag", comment: "Create a new tag")
+        save()
     }
     
     // count how many decoded values have come from T

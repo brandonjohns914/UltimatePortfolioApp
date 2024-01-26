@@ -41,7 +41,8 @@ struct SidebarView: View {
                     // changes the view of recent or all
                     NavigationLink(value: filter) {
                         // this shows all issues.names
-                        Label(filter.name, systemImage: filter.icon)
+                        // localized string for different languages
+                        Label(LocalizedStringKey(filter.name), systemImage: filter.icon)
                     }
                 }
             }
@@ -68,7 +69,8 @@ struct SidebarView: View {
                             }
                             .accessibilityElement() //groups all of these as one element for accessibility
                             .accessibilityLabel(filter.name)
-                            .accessibilityHint("^[\(filter.activeIssuesCount) issue](inflect: true)") //automatic grammar agreement
+                            .accessibilityHint("\(filter.activeIssuesCount) issues")
+                            //.accessibilityHint("^[\(filter.activeIssuesCount) issue](inflect: true)") //automatic grammar agreement
                     }
                 }
                 .onDelete(perform: delete) // to swipe and delete tags
