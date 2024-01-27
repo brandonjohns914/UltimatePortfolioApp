@@ -24,7 +24,7 @@ struct SidebarView: View {
     @State private var tagName = ""
     
     
-    @State private var showingAwards = false
+
     
     // convert tags into one filter object
     var tagFilters: [Filter] {
@@ -36,74 +36,30 @@ struct SidebarView: View {
     var body: some View {
         List(selection: $dataController.selectedFilter) {
             Section("Smart Filters") {
-                // this sorts through both recent and all
-                ForEach(smartFilters) { filter in
-                    // changes the view of recent or all
-                    NavigationLink(value: filter) {
-                        // this shows all issues.names
-                        // localized string for different languages
-                        Label(LocalizedStringKey(filter.name), systemImage: filter.icon)
-                    }
-                }
+                // Creation filters of  recent and all
+                ForEach(smartFilters, content: SmartFilterRow.init)
             }
             
             // takes in the tags and places them
             // changes the view of where the tag goes
             Section("Tags") {
                 ForEach(tagFilters) { filter in
-                    NavigationLink(value: filter) {
-                        Label(filter.name, systemImage: filter.icon)
-                            .badge(filter.activeIssuesCount)
-                            .contextMenu {
-                                Button {
-                                    rename(filter)
-                                } label: {
-                                    Label("Rename", systemImage: "pencil")
-                                }
-                                // delete the tag during creation
-                                Button(role: .destructive){
-                                    delete(filter)
-                                } label: {
-                                    Label("Delete", systemImage: "trash")
-                                }
-                            }
-                            .accessibilityElement() //groups all of these as one element for accessibility
-                            .accessibilityLabel(filter.name)
-                            .accessibilityHint("\(filter.activeIssuesCount) issues")
-                            //.accessibilityHint("^[\(filter.activeIssuesCount) issue](inflect: true)") //automatic grammar agreement
-                    }
+                    
+                    // passing the functions 
+                    UserFilterRow(filter: filter, rename: rename, delete: delete)
+                    
+                    
+                    
                 }
                 .onDelete(perform: delete) // to swipe and delete tags
             }
         }
-        .toolbar {
-            Button(action: dataController.newTag) {
-                Label("Add tag", systemImage: "plus")
-            }
-            
-            Button {
-                showingAwards.toggle()
-            } label: {
-                Label("Show awards", systemImage: "rosette")
-            }
-            
-            
-            //only used during debug wont be viewed from appstore
-            #if DEBUG
-            Button {// creates sample data adds and deletes them
-                dataController.deleteAll()
-                dataController.createSampleData()
-            } label: {
-                Label("ADD SAMPLES", systemImage: "flame")
-            } #endif
-            
-        }
+        .toolbar(content: SideBarViewToolbar.init)
         .alert("Rename tag", isPresented: $renamingTag) {
             Button("OK", action: completeRename)
             Button("Cancel", role: .cancel) { }
             TextField("New name", text: $tagName)
         }
-        .sheet(isPresented: $showingAwards, content: AwardsView.init) 
         .navigationTitle("Filters")
     }
     

@@ -31,38 +31,7 @@ struct IssueView: View {
                        Text("High").tag(Int16(2))
                 }
                 
-                Menu {
-                    // show selected tags
-                    ForEach(issue.issueTags) { tag in
-                        Button{
-                            //removeFromTags created by coredata
-                            issue.removeFromTags(tag)
-                        } label: {
-                            Label(tag.tagName, systemImage: "checkmark")
-                        }
-                    }
-                    
-                    //unselectedTags
-                    
-                    let otherTags = dataController.missingTags(from: issue)
-                    
-                    if otherTags.isEmpty == false {
-                    Divider()
-                        
-                        Section("Add Tags") {
-                            ForEach(otherTags) { tag in
-                                Button(tag.tagName) {
-                                    issue.addToTags(tag)
-                                }
-                            }
-                        }
-                    }
-                } label: {
-                    Text(issue.issueTagsList)
-                        .multilineTextAlignment(.leading)
-                        .frame(maxWidth: .infinity, alignment: .leading) //tags selected view size
-                        .animation(nil, value: issue.issueTagsList) // no animation on the tags selected 
-                }
+              TagsMenuView(issue: issue)
             }
             Section {
                 VStack(alignment: .leading) {
@@ -81,22 +50,7 @@ struct IssueView: View {
         }
         .onSubmit(dataController.save) // user submits does not have to wait for the queue 
         .toolbar {
-            Menu {
-                Button {
-                    UIPasteboard.general.string = issue.title
-                } label: {
-                    Label("Copy Issue Title", systemImage: "doc.on.doc")
-                }
-
-                Button {
-                    issue.completed.toggle()
-                    dataController.save()
-                } label: {
-                    Label(issue.completed ? "Re-open Issue" : "Close Issue", systemImage: "bubble.left.and.exclamationmark.bubble.right")
-                }
-            } label: {
-                Label("Actions", systemImage: "ellipsis.circle")
-            }
+            IssueViewToolbar(issue: issue)
         }
         
     }
@@ -104,4 +58,5 @@ struct IssueView: View {
 
 #Preview {
     IssueView(issue: .example)
+        .environmentObject(DataController(inMemory: true))
 }
