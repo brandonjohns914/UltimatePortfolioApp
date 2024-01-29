@@ -10,6 +10,11 @@ import SwiftUI
 struct IssueViewToolbar: View {
     @EnvironmentObject var dataController: DataController
     @ObservedObject var issue: Issue
+    
+    var openCloseButtonText: LocalizedStringKey {
+        issue.completed ? "Re-open Issue" : "Close Issue"
+    }
+    
     var body: some View {
         Menu {
             Button {
@@ -17,15 +22,16 @@ struct IssueViewToolbar: View {
             } label: {
                 Label("Copy Issue Title", systemImage: "doc.on.doc")
             }
-
+            
             Button {
                 issue.completed.toggle()
                 dataController.save()
             } label: {
-                Label(issue.completed ? "Re-open Issue" : "Close Issue", systemImage: "bubble.left.and.exclamationmark.bubble.right")
+                Label(openCloseButtonText, systemImage: "bubble.left.and.exclamationmark.bubble.right")
             }
             
             Divider()
+            
             // adds the tags to the menu
             Section("Tags"){
                 TagsMenuView(issue: issue)

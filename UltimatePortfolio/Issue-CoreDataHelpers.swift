@@ -16,26 +16,20 @@ extension Issue {
         get { content ?? "" }
         set { content = newValue}
     }
-    
     var issueCreationDate: Date {
         creationDate ?? . now
     }
-    
     var issueModificationDate: Date {
         modificationDate ?? .now
     }
-    
     //sorts issueTags so they are sorted in order on the screen
     var issueTags: [Tag] {
-        
-        let result = tags?.allObjects as? [Tag] ?? []
+       let result = tags?.allObjects as? [Tag] ?? []
         return result.sorted()
     }
-    
     // creates so the tags can be displayed by their name 
     var issueTagsList: String {
         guard let tags else { return "No tags" }
-
         if tags.count == 0 {
             return "No tags"
         } else {
@@ -50,18 +44,13 @@ extension Issue {
             return "Open"
         }
     }
-    
     var issueFormattedCreationDate: String {
         issueCreationDate.formatted(date: .numeric, time: .omitted)
     }
-    
     //sample example issue
     static var example: Issue {
-        
         let controller = DataController(inMemory: true)
-        
         let viewContext = controller.container.viewContext
-        
         let issue = Issue(context: viewContext)
         issue.title = "Example Issue"
         issue.content = "This is an example issue."
@@ -70,7 +59,6 @@ extension Issue {
         return issue
     }
 }
-
 // have to make Issue comparable so it can be sorted
 extension Issue: Comparable {
     public static func <(lhs: Issue, rhs: Issue) -> Bool {

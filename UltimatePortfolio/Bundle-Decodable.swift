@@ -7,11 +7,11 @@
 
 import Foundation
 
+// swiftlint: disable line_length
 extension Bundle {
     // 1)  decoding a file of type string to a generic T
     //T.Type = what kind of type T is expected to decode
     //T.self = default type of T if swift can decode it
-    
     func decode<T: Decodable>(
         _ file: String,
         as type: T.Type = T.self,
@@ -24,15 +24,14 @@ extension Bundle {
         guard let data = try? Data(contentsOf: url) else {
             fatalError("Failed to load \(file) from bundle")
         }
-        
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = dateDecodingStrategy
         decoder.keyDecodingStrategy = keyDecodingStrategy
-        
-        do {
+            do {
             //returning the decodable contents
             return try decoder.decode(T.self, from: data)
         } catch DecodingError.keyNotFound(let key, let context) {
+            //swiftlint:disable:next line_length
             fatalError("Failed to decode \(file) from bundle due to missing key '\(key.stringValue)' - \(context.debugDescription) ")
         } catch DecodingError.typeMismatch(_, let context) {
             fatalError("Failed to decode \(file) from bundle due to type mismatch - \(context.debugDescription) ")
@@ -43,10 +42,8 @@ extension Bundle {
         } catch {
             fatalError("Failed to decode \(file) from bundle: \(error.localizedDescription)" )
         }
-        
     }
 }
-
 
 /*
 1)
@@ -56,7 +53,7 @@ extension Bundle {
   T.self = default type of T if swift can decode it
  Custom date if not use default dateDecodingStrategy: JSONDecoder.DateDecodingStrategy = .deferredToDate
  Custom key if not use default keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys
- 
- 
- 
  */
+
+
+// swiftlint: enable line_length

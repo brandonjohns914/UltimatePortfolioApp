@@ -11,11 +11,9 @@ struct AwardsView: View {
     @EnvironmentObject var dataController: DataController
     @State private var selectedAward = Award.example
     @State private var showingAwardDetails = false
-    
     var columns: [GridItem] {
         [GridItem(.adaptive(minimum: 100, maximum: 100))]
     }
-    
     var body: some View {
         NavigationStack {
             ScrollView {

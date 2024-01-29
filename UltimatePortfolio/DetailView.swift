@@ -23,6 +23,7 @@ struct DetailView: View {
     }
 }
 
-//#Preview {
-//    DetailView()
-//}
+#Preview {
+    DetailView()
+        .environmentObject(DataController(inMemory: true))
+}

@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct UserFilterRow: View {
-    var filter: Filter
-    
-    // functions passed into
+    var filter: Filter // functions passed into
     var rename: (Filter) -> Void
     var delete: (Filter) -> Void
     
@@ -36,7 +34,6 @@ struct UserFilterRow: View {
                 .accessibilityHint("\(filter.activeIssuesCount) issues")
                 //.accessibilityHint("^[\(filter.activeIssuesCount) issue](inflect: true)") //automatic grammar agreement
         }
-
     }
 }
 
