@@ -7,7 +7,10 @@
 
 import Foundation
 // Issue is the class given when CoreDate Entinties are created
+
+
 extension Issue {
+    
     var issueTitle: String {
         get { title ?? "" }
         set { title = newValue}

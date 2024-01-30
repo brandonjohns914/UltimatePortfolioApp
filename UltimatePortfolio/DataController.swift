@@ -121,10 +121,15 @@ class DataController: ObservableObject {
         }
     }
     // change has happened to the data
+    /// Updates once a change has happened to the data in memory
+    /// - Parameter notification: notification lets date know it should update
     func remoteStoreChanged(_ notification: Notification) {
         objectWillChange.send()
     }
     // used for testing and previewing
+    
+    /// Used to create sample data for testing
+    /// Creates 5 Tags and 50 Issues
     func createSampleData() {
         // main queues managed object context
         let viewContext = container.viewContext
@@ -162,11 +167,12 @@ class DataController: ObservableObject {
     }
     
     // save task after waiting a few seconds
+    
+    /// Creates a new task to wait three seconds before saving
+    /// It will cancel the current save request if a change happens before the three second timer is completed
+    /// It must run on the MainActor
     func queueSave() {
-        // cancel the save if changes happen before 3 seconds are complete
         saveTask?.cancel()
-        // creating a new task to wait 3 seconds before saving
-        // must run this task on the MainActor
         saveTask = Task { @MainActor in
             print("Queuing save")
             try await Task.sleep(for: .seconds(3))
@@ -174,28 +180,38 @@ class DataController: ObservableObject {
             print("Saved")
         }
     }
+    
+    ///  Deletes objects from the data model
+    ///  NSManagedObect = base core data Model that all objects inherit from
+    ///  Memory is oging to send the delete item to the queue delete it and then save it
+    /// - Parameter object: object is item being deleted from the model
     func delete(_ object: NSManagedObject) {
-        //NSManagedObect = base core data Model that all objects inherit from
-        // memory is going to change send it to the queue and delete it form the queue then save it
         objectWillChange.send()
         container.viewContext.delete(object)
         save()
     }
-    //private because its only used for testing
+   
     // deleting the values found from the fetchRequest in a batchDeleteRequest
+    
+    //1)
+    /// Private delete function that is used for testing and deleting values that are fetchRequested in batchDeleteRequest
+    /// When Performing a batch delete request we need to read the result back
+    /// then  merged all changes to the result into a viewContext in order to keep it in sync
+  
+    /// - Parameter fetchRequest: what fetched items to delete
     private func delete(_ fetchRequest: NSFetchRequest<NSFetchRequestResult>) {
-        //1st tell me what you deleted the batch.result the object identifiers
-        //2nd execute fetch request
-        //3rd place the delete objects into a dictionary
-        // taking the fetchRequest results and making them a batchDelete
+     
         let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         // send back the results IDs
         batchDeleteRequest.resultType = .resultTypeObjectIDs
         
-        
+       
         //when performing abatch delete we need to read the result back
         //then merge all the changes that result back into a view context
         // this way they stay in sync
+        // 1st tell me what you deleted the batch result the object identifiers
+        // 2nd execute fetch request
+        // 3rd place the delete objects into a dictionary
         
         // delete the IDs found and define them as a batchDeleteResult
         // execute can take any kind of fetch request
@@ -297,9 +313,13 @@ class DataController: ObservableObject {
     }
     
     //creates and saves new issue
+    
+    /// Creates a new  Issue
+    /// sets the values of Issue from the  datamodel
+    /// .title, .creationDate, .priority
+    
     func newIssue() {
         let issue = Issue(context: container.viewContext)
-        // .title comes from the dataModel attributes
         // NSLocalizedString for multiple language support
         issue.title = NSLocalizedString("New Issue", comment: "Create a new issue")
         issue.creationDate = .now
@@ -316,6 +336,9 @@ class DataController: ObservableObject {
         selectedIssue = issue
     }
     
+    
+    /// Creats a new Tag
+    /// sets values for .id and .name
     func newTag() {
         let tag = Tag(context: container.viewContext)
         tag.id = UUID()
@@ -324,10 +347,20 @@ class DataController: ObservableObject {
         save()
     }
     // count how many decoded values have come from T
+    
+    /// Generic type of decoded values
+    /// - Parameter fetchRequest: looking for the count of items
+    /// - Returns: <#description#>
     func count<T>(for fetchRequest: NSFetchRequest<T> ) -> Int {
         // count how many items for this fetchRequest if not return 0
         (try? container.viewContext.count(for: fetchRequest)) ?? 0
     }
+    
+    
+    /// Creates the awarding system
+    /// Decodes the award values for issues, closed, and tags
+    /// - Parameter award: decoded values from the award.json
+    /// - Returns: returns true for the award if they have hit the required parameters 
     func hasEarned(award: Award) -> Bool {
         switch award.criterion {
         case "issues":
@@ -353,3 +386,17 @@ class DataController: ObservableObject {
         }
     }
 }
+
+
+
+/*
+ 1) 
+ ***
+ when performing abatch delete we need to read the result back
+ then merge all the changes that result back into a view context
+  this way they stay in sync
+  1st tell me what you deleted the batch result the object identifiers
+  2nd execute fetch request
+  3rd place the delete objects into a dictionary
+ ***
+ */

@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Decodes the award JSON
 struct Award: Decodable, Identifiable {
     var id: String {name}
     var name: String
