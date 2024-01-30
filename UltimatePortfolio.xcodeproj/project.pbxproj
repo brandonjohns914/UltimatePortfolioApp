@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		41038BE02B68801E0093C794 /* DevelopmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41038BDF2B68801E0093C794 /* DevelopmentTests.swift */; };
 		4117A5812B58B7DF006BD701 /* Issue-CoreDataHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4117A5802B58B7DF006BD701 /* Issue-CoreDataHelpers.swift */; };
 		4117A5832B58B986006BD701 /* Tag-CoreDataHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4117A5822B58B986006BD701 /* Tag-CoreDataHelpers.swift */; };
 		4141C6F32B61D2560036EC84 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4141C6F12B61D2560036EC84 /* Colors.xcassets */; };
@@ -51,6 +52,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		41038BDF2B68801E0093C794 /* DevelopmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevelopmentTests.swift; sourceTree = "<group>"; };
 		4117A5802B58B7DF006BD701 /* Issue-CoreDataHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Issue-CoreDataHelpers.swift"; sourceTree = "<group>"; };
 		4117A5822B58B986006BD701 /* Tag-CoreDataHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tag-CoreDataHelpers.swift"; sourceTree = "<group>"; };
 		4141C6F12B61D2560036EC84 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 				41F799882B672FED00071C84 /* UltimatePortfolioTests.swift */,
 				41F799902B685ACA00071C84 /* AssetTests.swift */,
 				41F799942B68635600071C84 /* AwardsTest.swift */,
+				41038BDF2B68801E0093C794 /* DevelopmentTests.swift */,
 				41F799922B685F2600071C84 /* TagTests.swift */,
 			);
 			path = UltimatePortfolioTests;
@@ -377,6 +380,7 @@
 				41F799952B68635600071C84 /* AwardsTest.swift in Sources */,
 				41F799932B685F2600071C84 /* TagTests.swift in Sources */,
 				41F799892B672FED00071C84 /* UltimatePortfolioTests.swift in Sources */,
+				41038BE02B68801E0093C794 /* DevelopmentTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
