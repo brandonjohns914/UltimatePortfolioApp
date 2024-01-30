@@ -8,8 +8,11 @@
 import XCTest
 @testable import UltimatePortfolio
 
+
 final class AssetTests: XCTestCase {
     
+    
+    /// Tests to see that the color JSON has loaded
     func testColorsExists() {
         let allColors = ["Dark Blue", "Dark Gray", "Gold", "Gray", "Green",
                          "Light Blue", "Midnight", "Orange", "Pink", "Purple", "Red", "Teal"]

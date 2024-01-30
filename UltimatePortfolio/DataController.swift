@@ -63,6 +63,19 @@ class DataController: ObservableObject {
         return (try? container.viewContext.fetch(request).sorted()) ?? []
     }
     
+    //Loads the model once eveywhere its shared
+    static let model: NSManagedObjectModel = {
+        guard let url = Bundle.main.url(forResource: "Main", withExtension: "momd") else {
+            fatalError("Failed to locate model file")
+        }
+        guard let managedObjectModel = NSManagedObjectModel(contentsOf: url) else {
+            fatalError("Fauked to load model file")
+        }
+        
+        return managedObjectModel
+        
+    }()
+    
     
     //creates a testing feature that only exsists in ram
     
@@ -71,9 +84,10 @@ class DataController: ObservableObject {
     /// defaults to permanenet storage
     ///
     /// - Parameter inMemory: store this in data memory or not
-    init(inMemory: Bool = false ){
+    init(inMemory: Bool = false ) {
         // this loads the main data file
-        container = NSPersistentCloudKitContainer(name: "Main")
+        // Self because its a static method
+        container = NSPersistentCloudKitContainer(name: "Main", managedObjectModel: Self.model)
         
         //For testing and previewing
         // this creates a temporary in memory database and writes to dev/null
