@@ -9,9 +9,14 @@ import CoreData
 import XCTest
 @testable import UltimatePortfolio
 
+/// Tests for testing Awards are behaving as they should
+/// Creating Issues and Tags should unlock rewards
 final class AwardsTest: BaseTestCase {
     let awards = Award.allAwards
   
+    
+    /// Testing that Award ID and Name should match
+    /// looping through all awards and ids
     func testAwardIDMatchesName() {
         for award in awards {
             //.id & .name should be unique
@@ -19,12 +24,16 @@ final class AwardsTest: BaseTestCase {
         }
     }
     
+    
+    /// Testing new users to make sure they start off with no awards
     func testNewUserHasUnlockedNoAwards() {
         for award in awards {
             XCTAssertFalse(dataController.hasEarned(award: award), "New users should have no earned awards")
         }
     }
     
+    
+    /// Testing that awards are unlocked after the user hits certain milestones
     func testCreatingIssuesUnlocksAwards() {
         // values correspond to how many issues and their position in the array
         let values = [1, 10, 20, 50, 100, 250, 500, 1000]
@@ -47,6 +56,8 @@ final class AwardsTest: BaseTestCase {
             dataController.deleteAll()
         }
     }
+    
+    /// Testing that closing issues unlocks awards 
     func testClosingIssuesUnlocksAwards() {
         // values correspond to how many issues and their position in the array
         let values = [1, 10, 20, 50, 100, 250, 500, 1000]

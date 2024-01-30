@@ -23,6 +23,7 @@ final class AssetTests: XCTestCase {
         
     }
     
+    /// Tests that the awards have loaded correctly based 
     func testAwardsLoadCorrectly() {
         XCTAssertTrue(Award.allAwards.isEmpty == false, "Failed to load awards from JSON")
     }

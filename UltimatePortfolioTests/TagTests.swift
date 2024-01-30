@@ -9,8 +9,12 @@ import CoreData
 import XCTest
 @testable import UltimatePortfolio
 
+
+/// Testing Creating and Deleting Tags
 final class TagTests: BaseTestCase {
 
+    
+    /// Testing the creation of tags
     func testCreatingTagsAndIssues() {
         let count = 10
         
@@ -30,6 +34,8 @@ final class TagTests: BaseTestCase {
         XCTAssertEqual(dataController.count(for: Issue.fetchRequest()), count * count, "Expected \(count * count) issues.")
     }
   
+    
+    /// Testing that deleting Tags does not delete issues 
     func testDeletingTagDoesNotDeleteIssues() throws {
         dataController.createSampleData()
         

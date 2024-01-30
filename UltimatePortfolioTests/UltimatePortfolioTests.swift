@@ -12,6 +12,9 @@ import XCTest
 @testable import UltimatePortfolio
 
 
+/// BaseTestCase is what all other tests are based off
+/// creates implicitly unwrapped DataController and NSManagedObjectContext
+/// //
 class BaseTestCase: XCTestCase {
     // all tests have datastorage as needed
     var dataController: DataController!
