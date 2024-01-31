@@ -27,7 +27,7 @@ struct AwardsView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .padding()
-                                .frame(width: 100, height: 100)
+                                .frame(width: 80, height: 80)
                                 .foregroundColor(color(for: award))
 
                         }

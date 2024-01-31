@@ -21,6 +21,7 @@ struct IssueRow: View {
                     .imageScale(.large)
                     // issue is priority 2 fully view else not visible
                     .opacity(issue.priority == 2 ? 1 : 0)
+                    .accessibilityIdentifier(issue.priority == 2 ? "\(issue.issueTitle) High Priority" : "")
                 VStack (alignment: .leading) {
                     Text(issue.issueTitle)
                         .font(.headline)
@@ -45,6 +46,7 @@ struct IssueRow: View {
             }
         }
         .accessibilityHint(issue.priority == 2 ? "High priority" : "")
+        .accessibilityIdentifier(issue.issueTitle)
     }
 }
 

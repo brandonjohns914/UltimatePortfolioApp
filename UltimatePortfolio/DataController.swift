@@ -7,6 +7,7 @@
 
 
 import CoreData
+import SwiftUI
 
 enum SortType: String {
     // raw value is what is assigned in coredata so the string version of these
@@ -69,7 +70,7 @@ class DataController: ObservableObject {
             fatalError("Failed to locate model file")
         }
         guard let managedObjectModel = NSManagedObjectModel(contentsOf: url) else {
-            fatalError("Fauked to load model file")
+            fatalError("Fauled to load model file")
         }
         
         return managedObjectModel
@@ -118,6 +119,17 @@ class DataController: ObservableObject {
             if let error {
                 fatalError("Fatal error loading store: \(error.localizedDescription)")
             }
+            
+            //runs only in Debug mode for testing
+            #if DEBUG
+            //"enable-testing" is referenced in UITests
+            if CommandLine.arguments.contains("enable-testing") {
+                self.deleteAll()
+                // turns off the animation during debugging 
+                UIView.setAnimationsEnabled(false)
+            }
+            #endif
+            
         }
     }
     // change has happened to the data
@@ -321,7 +333,7 @@ class DataController: ObservableObject {
     func newIssue() {
         let issue = Issue(context: container.viewContext)
         // NSLocalizedString for multiple language support
-        issue.title = NSLocalizedString("New Issue", comment: "Create a new issue")
+        issue.title = NSLocalizedString("New Issue", comment: "Create a New Issue")
         issue.creationDate = .now
         issue.priority = 1
         

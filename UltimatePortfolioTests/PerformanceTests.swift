@@ -17,7 +17,6 @@ final class PerformanceTests: BaseTestCase {
         }
         let awards = Array(repeating: Award.allAwards, count: 25).joined()
         
-        
         //Future testing. Sets the award count to 500.
         // So any slow preformance is due to something else
         XCTAssertEqual(awards.count, 500, "This checks the awards count is constant. Change this if you add awards")

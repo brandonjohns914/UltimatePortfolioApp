@@ -21,7 +21,7 @@ struct ContentView: View {
             text: $dataController.filterText,
             tokens: $dataController.filterTokens,
             suggestedTokens: .constant(dataController.suggestedFilterTokens),
-            prompt: "Select a Tag or Type to find an issue") { tag in
+            prompt: "Select a Tag or Type to find an Issue") { tag in
             Text(tag.tagName)
         }
         .toolbar(content: ContentViewToolbar.init)

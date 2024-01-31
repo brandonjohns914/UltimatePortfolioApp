@@ -56,7 +56,7 @@ extension Issue {
         let viewContext = controller.container.viewContext
         let issue = Issue(context: viewContext)
         issue.title = "Example Issue"
-        issue.content = "This is an example issue."
+        issue.content = "This is an example Issue."
         issue.priority = 2
         issue.creationDate = .now
         return issue
