@@ -8,25 +8,20 @@
 import SwiftUI
 
 struct SidebarView: View {
-    //getting the data controller
-    @EnvironmentObject var dataController: DataController
+    @StateObject private var viewModel: ViewModel
+    
     // this accesses the all and recent filters in filter
     let smartFilters: [Filter] = [.all, .recent]
-    // find and sort Tags by name
-    @FetchRequest(sortDescriptors: [SortDescriptor(\.name)]) var tags: FetchedResults<Tag>
-    // renaming tags are local
-    @State private var tagToRename: Tag?
-    @State private var renamingTag = false
-    @State private var tagName = ""
-    // convert tags into one filter object
-    var tagFilters: [Filter] {
-        tags.map { tag in
-            Filter(id: tag.tagID, name: tag.tagName, icon: "tag", tag: tag)
-        }
+    
+    
+    init(dataController: DataController) {
+        let viewModel = ViewModel(dataController: dataController)
+        _viewModel = StateObject(wrappedValue: viewModel)
     }
+ 
     
     var body: some View {
-        List(selection: $dataController.selectedFilter) {
+        List(selection: $viewModel.dataController.selectedFilter) {
             Section("Smart Filters") {
                 // Creation filters of  recent and all
                 ForEach(smartFilters, content: SmartFilterRow.init)
@@ -34,50 +29,25 @@ struct SidebarView: View {
             // takes in the tags and places them
             // changes the view of where the tag goes
             Section("Tags") {
-                ForEach(tagFilters) { filter in
+                ForEach(viewModel.tagFilters) { filter in
                     // passing the functions
-                    UserFilterRow(filter: filter, rename: rename, delete: delete)
+                    UserFilterRow(filter: filter, rename: viewModel.rename, delete: viewModel.delete)
                 }
-                .onDelete(perform: delete) // to swipe and delete tags
+                .onDelete(perform: viewModel.delete) // to swipe and delete tags
             }
         }
         .toolbar(content: SideBarViewToolbar.init)
-        .alert("Rename tag", isPresented: $renamingTag) {
-            Button("OK", action: completeRename)
+        .alert("Rename tag", isPresented: $viewModel.renamingTag) {
+            Button("OK", action: viewModel.completeRename)
             Button("Cancel", role: .cancel) { }
-            TextField("New name", text: $tagName)
+            TextField("New name", text: $viewModel.tagName)
         }
         .navigationTitle("Filters")
     }
-    //for swipe to delete
-    func delete(_ offsets: IndexSet) {
-        for offset in offsets {
-            let item = tags[offset]
-            dataController.delete(item)
-        }
-    }
-    func delete(_ filter: Filter) {
-        guard let tag = filter.tag else {return}
-        dataController.delete(tag)
-        dataController.save()
-    }
-    func rename(_ filter: Filter) {
-        // setting local rename to filter.tag
-        tagToRename = filter.tag
-        //setting name to filter.name
-        tagName = filter.name
-        
-        renamingTag = true
-    }
-    func completeRename() {
-        // setting tagNAme to the rename
-        tagToRename?.name = tagName
-        // saving the rename
-        dataController.save()
-    }
+    
 }
 
 #Preview {
-    SidebarView()
-        .environmentObject(DataController.preview)
+    SidebarView(dataController: DataController.preview)
+        
 }
