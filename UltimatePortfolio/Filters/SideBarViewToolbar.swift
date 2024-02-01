@@ -14,7 +14,7 @@ struct SideBarViewToolbar: View {
     
     var body: some View {
         Button(action: dataController.newTag) {
-            Label("Add tag", systemImage: "plus")
+            Label("Add Tag", systemImage: "plus")
         }
         Button {
             showingAwards.toggle()

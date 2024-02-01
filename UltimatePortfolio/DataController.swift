@@ -53,7 +53,8 @@ class DataController: ObservableObject {
         //            return []
         //        }
         // removing # and white spaces to search for the request
-        let trimmedFilterText = String(filterText.dropFirst()).trimmingCharacters(in: .whitespaces)
+        //let trimmedFilterText = String(filterText.dropFirst()).trimmingCharacters(in: .whitespaces)
+        let trimmedFilterText = String(filterText).trimmingCharacters(in: .whitespaces)
         // searching Tag for the request
         let request = Tag.fetchRequest()
         if trimmedFilterText.isEmpty == false {

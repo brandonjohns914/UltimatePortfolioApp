@@ -28,7 +28,7 @@ struct AwardsView: View {
                                 .scaledToFit()
                                 .padding()
                                 .frame(width: 80, height: 80)
-                                .foregroundColor(color(for: award))
+                                .foregroundStyle(color(for: award))
 
                         }
                         .accessibilityLabel(label(for: award))
@@ -45,7 +45,7 @@ struct AwardsView: View {
         
         
     }
-    var awardTitle: String {
+    var awardTitle: LocalizedStringKey {
         if dataController.hasEarned(award: selectedAward) {
             return "Unlocked: \(selectedAward.name)"
         } else {
