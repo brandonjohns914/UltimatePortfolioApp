@@ -17,7 +17,7 @@ struct UltimatePortfolioApp: App {
             NavigationSplitView {
                 SidebarView(dataController: dataController)
             } content: {
-                ContentView()
+                ContentView(dataController: dataController)
             } detail: {
                 DetailView()
             } // everytime Swift wants to query core data needs to know where to look
