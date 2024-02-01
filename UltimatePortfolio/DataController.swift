@@ -22,18 +22,22 @@ enum Status {
 /// An environment singleton responsible for managing our Core Data stack, including handling saving,
 /// counting fetch requests, tracking orders, and dealing with sample data.
 class DataController: ObservableObject {
-    // loads/stores core data information so it can be passed between devices
+    
     /// The lone CloudKit container used to store all our data
     let container: NSPersistentCloudKitContainer
+    
+    var spotLightDelegate: NSCoreDataCoreSpotlightDelegate?
+    
+    
     // selectedFilter of the issues so this accesses the static all in filter
     @Published var selectedFilter: Filter? = Filter.all
     // This accesses the Issues on the mainDataModel
     @Published var selectedIssue: Issue?
-    //store filter text
+
     @Published var filterText = ""
     @Published var filterTokens = [Tag]()
     @Published var filterEnabled = false
-    // 1 = low 2 = high -1 = any priority
+   
     @Published var filterPriority = -1
     @Published var filterStatus = Status.all
     @Published var sortType = SortType.dateCreated
@@ -116,17 +120,31 @@ class DataController: ObservableObject {
             using: remoteStoreChanged
         )
         // error if the main file is never loaded
-        container.loadPersistentStores { _, error in
+        container.loadPersistentStores { [weak self] _, error in
             if let error {
                 fatalError("Fatal error loading store: \(error.localizedDescription)")
+            }
+            
+            if let description = self?.container.persistentStoreDescriptions.first {
+                description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+                    
+                if let coordinator = self?.container.persistentStoreCoordinator {
+                    self?.spotLightDelegate = NSCoreDataCoreSpotlightDelegate(
+                        forStoreWith: description,
+                        coordinator: coordinator
+                    )
+                    
+                    self?.spotLightDelegate?.startSpotlightIndexing()
+                }
+                
             }
             
             //runs only in Debug mode for testing
             #if DEBUG
             //"enable-testing" is referenced in UITests
             if CommandLine.arguments.contains("enable-testing") {
-                self.deleteAll()
-                // turns off the animation during debugging 
+                self?.deleteAll()
+                // turns off the animation during debugging
                 UIView.setAnimationsEnabled(false)
             }
             #endif
@@ -397,6 +415,24 @@ class DataController: ObservableObject {
             // fatalError("Unknown award criterion: \(award.criterion)")
             return false
         }
+    }
+    
+    
+    /// Looks for an issue with an uniqueIdentifier
+    /// checks the String and converts it into a valid URL
+    /// then converts the url into an object to be sent back 
+    /// - Parameter uniqueIdentifier: Issue being searched
+    /// - Returns: returns the Issue if not return nil
+    func issue(with uniqueIdentifier: String) -> Issue? {
+        guard let url = URL(string: uniqueIdentifier) else {
+            return nil
+        }
+        
+        guard let id = container.persistentStoreCoordinator.managedObjectID(forURIRepresentation: url) else {
+            return nil
+        }
+        
+        return try? container.viewContext.existingObject(with: id) as? Issue
     }
 }
 

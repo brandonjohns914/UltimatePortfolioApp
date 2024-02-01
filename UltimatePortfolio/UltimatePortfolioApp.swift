@@ -5,6 +5,7 @@
 //  Created by Brandon Johns on 1/15/24.
 //
 
+import CoreSpotlight
 import SwiftUI
 
 @main
@@ -29,6 +30,19 @@ struct UltimatePortfolioApp: App {
                     dataController.save()
                 }
             }
+            .onContinueUserActivity(CSSearchableItemActionType, perform: loadSpotlightItem)
         }
     }
+    
+    /// Reads out the core identifier spotlight sent
+    /// - Parameter userActivity: is the spotlight search
+    /// returns the selectedIssue from the selectedFilter  all
+    func loadSpotlightItem(_ userActivity: NSUserActivity) {
+        // reading out core identifer spot light sent
+        if let uniqueIdentifier = userActivity.userInfo?[CSSearchableItemActivityIdentifier] as? String {
+            dataController.selectedIssue = dataController.issue(with: uniqueIdentifier)
+            dataController.selectedFilter = .all
+        }
+    }
+    
 }
