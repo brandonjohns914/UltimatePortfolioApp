@@ -24,6 +24,7 @@
 		4145D49F2B59D4270002CA91 /* IssueRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4145D49E2B59D4270002CA91 /* IssueRow.swift */; };
 		4145D4A12B59F36F0002CA91 /* IssueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4145D4A02B59F36F0002CA91 /* IssueView.swift */; };
 		4145D4A32B59F37C0002CA91 /* NoIssueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4145D4A22B59F37C0002CA91 /* NoIssueView.swift */; };
+		4164C8622B6C7924001BE8F5 /* DataController-Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4164C8612B6C7924001BE8F5 /* DataController-Notifications.swift */; };
 		416BD7CC2B699E9800C91A8B /* PerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 416BD7CB2B699E9800C91A8B /* PerformanceTests.swift */; };
 		417E5E4C2B55EE5F002F8B87 /* UltimatePortfolioApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417E5E4B2B55EE5F002F8B87 /* UltimatePortfolioApp.swift */; };
 		417E5E4E2B55EE5F002F8B87 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417E5E4D2B55EE5F002F8B87 /* ContentView.swift */; };
@@ -90,6 +91,7 @@
 		4145D49E2B59D4270002CA91 /* IssueRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueRow.swift; sourceTree = "<group>"; };
 		4145D4A02B59F36F0002CA91 /* IssueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueView.swift; sourceTree = "<group>"; };
 		4145D4A22B59F37C0002CA91 /* NoIssueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoIssueView.swift; sourceTree = "<group>"; };
+		4164C8612B6C7924001BE8F5 /* DataController-Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataController-Notifications.swift"; sourceTree = "<group>"; };
 		416BD7CB2B699E9800C91A8B /* PerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PerformanceTests.swift; path = UltimatePortfolioTests/PerformanceTests.swift; sourceTree = SOURCE_ROOT; };
 		417E5E482B55EE5F002F8B87 /* UltimatePortfolio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UltimatePortfolio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		417E5E4B2B55EE5F002F8B87 /* UltimatePortfolioApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UltimatePortfolioApp.swift; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 			isa = PBXGroup;
 			children = (
 				41CD14DC2B575A3400DFA242 /* DataController.swift */,
+				4164C8612B6C7924001BE8F5 /* DataController-Notifications.swift */,
 				41F7997D2B67297600071C84 /* Filters */,
 				41F7997F2B67298800071C84 /* Issues */,
 				41F799802B67298F00071C84 /* Editing */,
@@ -464,6 +467,7 @@
 				41D3465C2B608B6D00F0F9D4 /* Bundle-Decodable.swift in Sources */,
 				41CD14E22B58950E00DFA242 /* DetailView.swift in Sources */,
 				41E9A4B82B6B0A71002B8F10 /* SidebarViewModel.swift in Sources */,
+				4164C8622B6C7924001BE8F5 /* DataController-Notifications.swift in Sources */,
 				41E9A4BA2B6B2267002B8F10 /* ContentViewModel.swift in Sources */,
 				41CD14DD2B575A3400DFA242 /* DataController.swift in Sources */,
 				41F799702B6464B700071C84 /* ContentViewToolbar.swift in Sources */,

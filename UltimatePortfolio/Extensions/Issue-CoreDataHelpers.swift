@@ -52,6 +52,12 @@ extension Issue {
         }
     }
     
+    var issueReminderTime: Date {
+        get { reminderTime ?? .now }
+        set { reminderTime = newValue }
+    }
+
+    
     //sample example issue
     static var example: Issue {
         let controller = DataController(inMemory: true)
