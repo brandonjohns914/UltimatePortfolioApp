@@ -11,11 +11,15 @@ struct SideBarViewToolbar: View {
     @EnvironmentObject var dataController: DataController
     // Binding there is a value type property created and owned somewhere else to changing it here
     @State private var showingAwards = false
+    @State private var showingStore = false
     
     var body: some View {
-        Button(action: dataController.newTag) {
-            Label("Add Tag", systemImage: "plus")
+        Button(action: tryNewTag) {
+            Label("Add tag", systemImage: "plus")
         }
+        .sheet(isPresented: $showingStore, content: StoreView.init)
+        
+        
         Button {
             showingAwards.toggle()
         } label: {
@@ -30,6 +34,12 @@ struct SideBarViewToolbar: View {
         } label: {
             Label("ADD SAMPLES", systemImage: "flame")
         } #endif
+    }
+    
+    func tryNewTag() {
+        if dataController.newTag() == false {
+            showingStore = true
+        }
     }
 }
 

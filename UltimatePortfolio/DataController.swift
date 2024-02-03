@@ -43,6 +43,12 @@ class DataController: ObservableObject {
     @Published var sortType = SortType.dateCreated
     @Published var sortNewestFirst = true
     private var saveTask: Task<Void, Error>?
+    
+    private var storeTask: Task<Void, Never>?
+    
+    /// The UserDefaults suite where we're saving user data.
+    let defaults: UserDefaults
+    
     // example of a of the DataController without creating an instance
     static var preview: DataController = {
         let dataController = DataController(inMemory: true)
@@ -90,10 +96,18 @@ class DataController: ObservableObject {
     /// defaults to permanenet storage
     ///
     /// - Parameter inMemory: store this in data memory or not
-    init(inMemory: Bool = false ) {
+    /// - Parameter defaults: The UserDefaults Suite where use dats should be stored.
+    init(inMemory: Bool = false, defaults: UserDefaults = .standard) {
+        self.defaults = defaults 
+        
         // this loads the main data file
         // Self because its a static method
         container = NSPersistentCloudKitContainer(name: "Main", managedObjectModel: Self.model)
+        
+        // as soon as you can watch transactions coming in from apple 
+        storeTask = Task {
+            await monitorTransactions()
+        }
         
         //For testing and previewing
         // this creates a temporary in memory database and writes to dev/null
@@ -368,16 +382,30 @@ class DataController: ObservableObject {
     }
     
     
-    /// Creats a new Tag
-    /// sets values for .id and .name
-    func newTag() {
+    /// Creates a new tag
+    /// the user can only create 3 new tags without purchasing and upgrading
+    /// - Returns: returns false if they have created less than 3 tags
+    func newTag() -> Bool {
+        var shouldCreate = fullVersionUnlocked
+
+        if shouldCreate == false {
+            // check how many tags we currently have
+            shouldCreate = count(for: Tag.fetchRequest()) < 3
+        }
+
+        guard shouldCreate else {
+            return false
+        }
+
         let tag = Tag(context: container.viewContext)
         tag.id = UUID()
         // NSLocalizedString for multiple language support
         tag.name = NSLocalizedString("New Tag", comment: "Create a new tag")
         save()
+        
+        return true 
     }
-    // count how many decoded values have come from T
+    
     
     /// Generic type of decoded values
     /// - Parameter fetchRequest: looking for the count of items
