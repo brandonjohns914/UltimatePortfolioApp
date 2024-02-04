@@ -9,7 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject var viewModel: ViewModel
-    
+    @Environment(\.requestReview) var requestReview
+
     var body: some View {
         List(selection: $viewModel.dataController.selectedIssue) {
             ForEach(viewModel.dataController.issuesForSelectedFilter()) { issue in
@@ -27,14 +28,19 @@ struct ContentView: View {
                 
         }
         .toolbar(content: ContentViewToolbar.init)
+        .onAppear(perform: askForReview)
     }
     
     init(dataController: DataController) {
         let viewModel = ViewModel(dataController: dataController)
         _viewModel = StateObject(wrappedValue: viewModel)
     }
-   
-}
+    
+    func askForReview() {
+        if viewModel.shouldRequestReview {
+            requestReview()
+        }
+    }}
 
 #Preview {
     ContentView(dataController: .preview)

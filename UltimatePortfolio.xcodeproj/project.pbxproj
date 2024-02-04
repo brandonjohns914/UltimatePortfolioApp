@@ -196,10 +196,8 @@
 		417E5E4A2B55EE5F002F8B87 /* UltimatePortfolio */ = {
 			isa = PBXGroup;
 			children = (
+				4188959F2B6EF3A500735ABF /* DataController */,
 				4188959C2B6DC29B00735ABF /* Store */,
-				41CD14DC2B575A3400DFA242 /* DataController.swift */,
-				4164C8612B6C7924001BE8F5 /* DataController-Notifications.swift */,
-				4188959A2B6DB99700735ABF /* DataController-StoreKit.swift */,
 				41F7997D2B67297600071C84 /* Filters */,
 				41F7997F2B67298800071C84 /* Issues */,
 				41F799802B67298F00071C84 /* Editing */,
@@ -229,6 +227,16 @@
 				4188959D2B6DC2AF00735ABF /* StoreView.swift */,
 			);
 			path = Store;
+			sourceTree = "<group>";
+		};
+		4188959F2B6EF3A500735ABF /* DataController */ = {
+			isa = PBXGroup;
+			children = (
+				41CD14DC2B575A3400DFA242 /* DataController.swift */,
+				4164C8612B6C7924001BE8F5 /* DataController-Notifications.swift */,
+				4188959A2B6DB99700735ABF /* DataController-StoreKit.swift */,
+			);
+			path = DataController;
 			sourceTree = "<group>";
 		};
 		41F799782B67262F00071C84 /* Localization */ = {
